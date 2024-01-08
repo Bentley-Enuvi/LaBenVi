@@ -1,0 +1,10 @@
+{
+  "version": "1.0",
+  "defaultProvider": "cdnjs",
+  "libraries": [
+    {
+      "library": "react-is@18.2.0",
+      "destination": "wwwroot/NavBarReact/react-is/"
+    }
+  ]
+}

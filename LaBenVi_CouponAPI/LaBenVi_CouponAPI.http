@@ -1,0 +1,6 @@
+@LaBenVi_CouponAPI_HostAddress = http://localhost:5147
+
+GET {{LaBenVi_CouponAPI_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
