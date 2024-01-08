@@ -11,9 +11,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "LaBenViServices", "LaBenViS
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Integration", "Integration", "{788F718B-0010-42E9-AB73-4E433359F24E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LaBenVi_CouponAPI", "LaBenVi_CouponAPI\LaBenVi_CouponAPI.csproj", "{1822C358-C2F8-4C17-BC18-F492107BAB3C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LaBenVi_CouponAPI", "LaBenVi_CouponAPI\LaBenVi_CouponAPI.csproj", "{1822C358-C2F8-4C17-BC18-F492107BAB3C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LaBenVi-UI", "LaBenVi-UI\LaBenVi-UI.csproj", "{28025B0E-269E-446C-84BD-B3636A02E3C9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LaBenVi-UI", "LaBenVi-UI\LaBenVi-UI.csproj", "{28025B0E-269E-446C-84BD-B3636A02E3C9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LaBenVi-AuthService", "LaBenVi-AuthService\LaBenVi-AuthService.csproj", "{69844D7C-B72F-4E50-BD3F-ADA1B819E455}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,6 +31,10 @@ Global
 		{28025B0E-269E-446C-84BD-B3636A02E3C9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{28025B0E-269E-446C-84BD-B3636A02E3C9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{28025B0E-269E-446C-84BD-B3636A02E3C9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{69844D7C-B72F-4E50-BD3F-ADA1B819E455}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{69844D7C-B72F-4E50-BD3F-ADA1B819E455}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{69844D7C-B72F-4E50-BD3F-ADA1B819E455}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{69844D7C-B72F-4E50-BD3F-ADA1B819E455}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -36,6 +42,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{1822C358-C2F8-4C17-BC18-F492107BAB3C} = {9BDA4105-631F-4548-A802-7EEA2472F3DF}
 		{28025B0E-269E-446C-84BD-B3636A02E3C9} = {901B4F21-F5E0-46CC-9AFF-DA1AFFB6BA6A}
+		{69844D7C-B72F-4E50-BD3F-ADA1B819E455} = {9BDA4105-631F-4548-A802-7EEA2472F3DF}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2D0D5FD5-82E2-4F02-959C-751BA45D2773}
