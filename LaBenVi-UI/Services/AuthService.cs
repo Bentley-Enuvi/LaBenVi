@@ -24,7 +24,7 @@ namespace LaBenVi_UI.Services
                 ApiAction = Static_Details.ApiAction.POST,
                 Data = regRequestDto,
                 Url = Static_Details.AuthAPIBase + "/api/auth/register",
-            });
+            }, withBearer: false);
         }
 
 
@@ -37,7 +37,7 @@ namespace LaBenVi_UI.Services
                 ApiAction = Static_Details.ApiAction.POST,
                 Data = loginRequestDto,
                 Url = Static_Details.AuthAPIBase + "/api/auth/login"
-            });
+            }, withBearer: false);
         }
 
 

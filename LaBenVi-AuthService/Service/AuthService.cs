@@ -52,7 +52,8 @@ namespace LaBenVi_AuthService.Service
                         Name = userToReturn.Name,
                         PhoneNumber = userToReturn.PhoneNumber,
                         Address = userToReturn.Address,
-                        Password = userToReturn.Password
+                        Password = userToReturn.Password,
+
                     };
 
                     return "";

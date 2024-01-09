@@ -11,16 +11,17 @@ namespace LaBenVi_UI.Services
     public class BaseService : IBaseService
     {
         private readonly IHttpClientFactory _httpClientFactory;
+        private readonly ITokenProvider _tokenProvider;
 
 
-        public BaseService(IHttpClientFactory httpClientFactory)
+        public BaseService(IHttpClientFactory httpClientFactory, ITokenProvider tokenProvider)
         {
             _httpClientFactory = httpClientFactory;
-
+            _tokenProvider = tokenProvider;
         }
 
 
-        public async Task<ResponseDto?> SendAsync(RequestDto requestVM)
+        public async Task<ResponseDto?> SendAsync(RequestDto requestDto, bool withBearer = true)
         {
             try
             {
@@ -28,15 +29,22 @@ namespace LaBenVi_UI.Services
                 HttpRequestMessage message = new();
                 message.Headers.Add("Accept", "application/json");
 
-                message.RequestUri = new Uri(requestVM.Url);
-                if (requestVM.Data != null)
+                //token
+                if(withBearer)
                 {
-                    message.Content = new StringContent(JsonConvert.SerializeObject(requestVM.Data), Encoding.UTF8, "application/json");
+                    var token = _tokenProvider.GetToken();
+                    message.Headers.Add("Authorization", $"Bearer {token}");
+                }
+
+                message.RequestUri = new Uri(requestDto.Url);
+                if (requestDto.Data != null)
+                {
+                    message.Content = new StringContent(JsonConvert.SerializeObject(requestDto.Data), Encoding.UTF8, "application/json");
                 }
 
                 HttpResponseMessage? apiResponse = null;
 
-                switch (requestVM.ApiAction)
+                switch (requestDto.ApiAction)
                 {
                     case ApiAction.POST:
                         message.Method = HttpMethod.Post;

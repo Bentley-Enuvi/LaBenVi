@@ -3,6 +3,7 @@ using Azure;
 using LaBenVi_CouponAPI.Data;
 using LaBenVi_CouponAPI.Models;
 using LaBenVi_CouponAPI.Models.DTOs;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 
@@ -10,6 +11,7 @@ namespace LaBenVi_CouponAPI.Controllers
 {
     [Route("api/coupon")]
     [ApiController]
+    [Authorize]
     public class CouponController : ControllerBase
     {
         private readonly LaBenViDbContext _context;
