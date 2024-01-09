@@ -39,7 +39,6 @@ namespace LaBenVi_UI.Controllers
 
             ViewBag.RoleList = roleList;
 
-            ViewBag.RoleList = roleList;
             return View();
         }
 
@@ -55,7 +54,7 @@ namespace LaBenVi_UI.Controllers
             if (response != null && response.IsSuccess)
             {
 
-                if (!string.IsNullOrEmpty(model.RoleName))
+                if (string.IsNullOrEmpty(model.RoleName))
                 {
                     model.RoleName = Static_Details.RoleRegular;
                 }

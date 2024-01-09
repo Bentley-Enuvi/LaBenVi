@@ -59,7 +59,7 @@ namespace LaBenVi_AuthService.Controllers
         [HttpPost("AssignRole")]
         public async Task<IActionResult> AssignRole([FromBody] RegRequestDto model)
         {
-            var assignRoleSuccessful = await _authService.AssignRole(model.Email, model.Role.ToUpper());
+            var assignRoleSuccessful = await _authService.AssignRole(model.Email, model.RoleName.ToUpper());
             if (!assignRoleSuccessful)
             {
                 _response.IsSuccess = false;
