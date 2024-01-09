@@ -2,12 +2,12 @@
 {
     public class LoginResponseDto
     {
-        public AppUserDto? User { get; set; }
+        public AppUser? User { get; set; }
         public string? Token { get; set; }
     }
 
 
-    public class AppUserDto
+    public class AppUser
     {
         public string Id { get; set; }
         public string Name { get; set; }

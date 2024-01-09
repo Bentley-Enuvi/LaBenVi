@@ -16,7 +16,7 @@ namespace LaBenVi_AuthService.Service
             _jwtOptions = jwtOptions.Value;
         }
 
-        public string GenerateToken(AppUser applicationUser, IEnumerable<string> roles)
+        public string GenerateToken(AppUser appUser)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
 
@@ -24,19 +24,19 @@ namespace LaBenVi_AuthService.Service
 
             var claimList = new List<Claim>
             {
-                new Claim(JwtRegisteredClaimNames.Email,applicationUser.Email),
-                new Claim(JwtRegisteredClaimNames.Sub,applicationUser.Id),
-                new Claim(JwtRegisteredClaimNames.Name,applicationUser.UserName)
+                new Claim(JwtRegisteredClaimNames.Email, appUser.Email),
+                new Claim(JwtRegisteredClaimNames.Sub, appUser.Id),
+                new Claim(JwtRegisteredClaimNames.Name, appUser.UserName)
             };
 
-            claimList.AddRange(roles.Select(role => new Claim(ClaimTypes.Role, role)));
+            //claimList.AddRange(roles.Select(role => new Claim(ClaimTypes.Role, role)));
 
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Audience = _jwtOptions.Audience,
                 Issuer = _jwtOptions.Issuer,
                 Subject = new ClaimsIdentity(claimList),
-                Expires = DateTime.UtcNow.AddDays(7),
+                Expires = DateTime.UtcNow.AddDays(5),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };
 

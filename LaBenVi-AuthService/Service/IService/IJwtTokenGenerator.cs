@@ -5,6 +5,6 @@ namespace LaBenVi_AuthService.Service.IService
 {
     public interface IJwtTokenGenerator
     {
-        string GenerateToken(AppUser applicationUser, IEnumerable<string> roles);
+        string GenerateToken(AppUser appUser);
     }
 }

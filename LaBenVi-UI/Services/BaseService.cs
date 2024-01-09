@@ -11,118 +11,84 @@ namespace LaBenVi_UI.Services
     public class BaseService : IBaseService
     {
         private readonly IHttpClientFactory _httpClientFactory;
-		private readonly ITokenProvider _tokenProvider;
 
-		public BaseService(IHttpClientFactory httpClientFactory, ITokenProvider tokenProvider)
+
+        public BaseService(IHttpClientFactory httpClientFactory)
         {
             _httpClientFactory = httpClientFactory;
-			_tokenProvider = tokenProvider;
-		}
+
+        }
 
 
-        public async Task<ResponseDto?> SendAsync(RequestDto requestDto, bool withBearer = true)
+        public async Task<ResponseDto?> SendAsync(RequestDto requestVM)
         {
-			try
-			{
-				HttpClient client = _httpClientFactory.CreateClient("MangoAPI");
-				HttpRequestMessage message = new();
-				if (requestDto.ContentType == ContentType.MultipartFormData)
-				{
-					message.Headers.Add("Accept", "*/*");
-				}
-				else
-				{
-					message.Headers.Add("Accept", "application/json");
-				}
-				//token
-				if (withBearer)
-				{
-					var token = _tokenProvider.GetToken();
-					message.Headers.Add("Authorization", $"Bearer {token}");
-				}
+            try
+            {
+                HttpClient client = _httpClientFactory.CreateClient("LaBenviAPI");
+                HttpRequestMessage message = new();
+                message.Headers.Add("Accept", "application/json");
 
-				message.RequestUri = new Uri(requestDto.Url);
+                message.RequestUri = new Uri(requestVM.Url);
+                if (requestVM.Data != null)
+                {
+                    message.Content = new StringContent(JsonConvert.SerializeObject(requestVM.Data), Encoding.UTF8, "application/json");
+                }
 
-				if (requestDto.ContentType == ContentType.MultipartFormData)
-				{
-					var content = new MultipartFormDataContent();
+                HttpResponseMessage? apiResponse = null;
 
-					foreach (var prop in requestDto.Data.GetType().GetProperties())
-					{
-						var value = prop.GetValue(requestDto.Data);
-						if (value is FormFile)
-						{
-							var file = (FormFile)value;
-							if (file != null)
-							{
-								content.Add(new StreamContent(file.OpenReadStream()), prop.Name, file.FileName);
-							}
-						}
-						else
-						{
-							content.Add(new StringContent(value == null ? "" : value.ToString()), prop.Name);
-						}
-					}
-					message.Content = content;
-				}
-				else
-				{
-					if (requestDto.Data != null)
-					{
-						message.Content = new StringContent(JsonConvert.SerializeObject(requestDto.Data), Encoding.UTF8, "application/json");
-					}
-				}
+                switch (requestVM.ApiAction)
+                {
+                    case ApiAction.POST:
+                        message.Method = HttpMethod.Post;
+                        break;
+
+                    case ApiAction.DELETE:
+                        message.Method = HttpMethod.Delete;
+                        break;
+
+                    case ApiAction.PUT:
+                        message.Method = HttpMethod.Put;
+                        break;
+
+                    default:
+                        message.Method = HttpMethod.Get;
+                        break;
+                }
+
+                apiResponse = await client.SendAsync(message);
+
+                switch (apiResponse.StatusCode)
+                {
+                    case HttpStatusCode.NotFound:
+                        return new() { IsSuccess = false, Message = "Not Found" };  //Error 404
+
+                    case HttpStatusCode.Forbidden:
+                        return new() { IsSuccess = false, Message = "Access Denied" }; //Error 403
+
+                    case HttpStatusCode.Unauthorized:
+                        return new() { IsSuccess = false, Message = "Unauthorized" }; //Error 401
+
+                    case HttpStatusCode.InternalServerError:
+                        return new() { IsSuccess = false, Message = "Internal Server Error" }; //Error 500
+
+                    default:
+                        var responseData = await apiResponse.Content.ReadAsStringAsync();
+                        var apiResponseDto = JsonConvert.DeserializeObject<ResponseDto>(responseData);
+                        return apiResponseDto;
+
+                }
+            }
+            catch (Exception ex)
+            {
+                var vM = new ResponseDto
+                {
+                    Message = ex.Message.ToString(),
+                    IsSuccess = false
+                };
+                return vM;
+            }
 
 
-
-
-
-				HttpResponseMessage? apiResponse = null;
-
-				switch (requestDto.ApiAction)
-				{
-					case ApiAction.POST:
-						message.Method = HttpMethod.Post;
-						break;
-					case ApiAction.DELETE:
-						message.Method = HttpMethod.Delete;
-						break;
-					case ApiAction.PUT:
-						message.Method = HttpMethod.Put;
-						break;
-					default:
-						message.Method = HttpMethod.Get;
-						break;
-				}
-
-				apiResponse = await client.SendAsync(message);
-
-				switch (apiResponse.StatusCode)
-				{
-					case HttpStatusCode.NotFound:
-						return new() { IsSuccess = false, Message = "Not Found" }; //Error 404
-					case HttpStatusCode.Forbidden:
-						return new() { IsSuccess = false, Message = "Access Denied" }; //Error 403
-					case HttpStatusCode.Unauthorized:
-						return new() { IsSuccess = false, Message = "Unauthorized" }; //Error 401
-					case HttpStatusCode.InternalServerError:
-						return new() { IsSuccess = false, Message = "Internal Server Error" };  //Error 500
-					default:
-						var apiContent = await apiResponse.Content.ReadAsStringAsync();
-						var apiResponseDto = JsonConvert.DeserializeObject<ResponseDto>(apiContent);
-						return apiResponseDto;
-				}
-			}
-			catch (Exception ex)
-			{
-				var dto = new ResponseDto
-				{
-					Message = ex.Message.ToString(),
-					IsSuccess = false
-				};
-				return dto;
-			}
-
-		}
+        }
     }
 }

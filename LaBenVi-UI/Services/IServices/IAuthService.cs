@@ -7,7 +7,7 @@ namespace LaBenVi_UI.Services.IServices
     {
         Task<ResponseDto?> LoginAsync(LoginRequestDto loginRequestDto);
         Task<ResponseDto?> SignUpAsync(RegRequestDto regRequestDto);
-        Task<ResponseDto?> RoleAssignmentAsync(RegRequestDto roleReg);
+        Task<ResponseDto?> RoleAssignmentAsync(RegRequestDto regRequestDto);
         //Task<List<IdentityRole>> GetAllRoles();
 
         //Task<bool> SendConfirmationEmailAsync(AppUser user, string confirmEmailAddress);

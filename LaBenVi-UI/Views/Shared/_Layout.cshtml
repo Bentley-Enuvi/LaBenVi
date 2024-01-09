@@ -41,15 +41,15 @@
                             </li>
                         }
                         <li class="nav-item">
-                            <a class="nav-link " asp-area="" asp-controller="Order" asp-action="OrderIndex">
+                            <a class="nav-link " asp-area="" asp-controller="Coupon" asp-action="CouponIndex">
                                 Manage Order
                             </a>
                         </li>
-                        <li class="nav-item">
+                        @* <li class="nav-item">
                             <a class="nav-link " asp-area="" asp-controller="Cart" asp-action="CartIndex">
                                 &nbsp; <i class="bi bi-cart"></i>&nbsp;
                             </a>
-                        </li>
+                        </li> *@
                     </ul>
                     <ul class="navbar-nav">
                         @if (!User.Identity.IsAuthenticated)
@@ -84,7 +84,7 @@
 
     <footer class="footer text-muted">
         <div class="text-center">
-            Made by Dev-B <i class="bi bi-laptop"></i> - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+             Made by Dev-B <i class="bi bi-laptop"></i> - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>

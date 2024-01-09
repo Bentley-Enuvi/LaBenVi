@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace LaBenVi_AuthService.Controllers
 {
+    [Route("api/auth")]
     public class AuthAPIController : Controller
     {
         private readonly IAuthService _authService;
@@ -25,7 +26,7 @@ namespace LaBenVi_AuthService.Controllers
         public async Task<IActionResult> Register([FromBody] RegRequestDto model)
         {
 
-            var errorMessage = await _authService.Register(model);
+            var errorMessage = await _authService.SignUp(model);
             if (!string.IsNullOrEmpty(errorMessage))
             {
                 _response.IsSuccess = false;
@@ -33,8 +34,10 @@ namespace LaBenVi_AuthService.Controllers
                 return BadRequest(_response);
             }
             //await _messageBus.PublishMessage(model.Email, _configuration.GetValue<string>("TopicAndQueueNames:RegisterUserQueue"));
-            return Ok(_response);
+                return Ok(_response);
         }
+
+
 
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginRequestDto model)
@@ -50,6 +53,8 @@ namespace LaBenVi_AuthService.Controllers
             return Ok(_response);
 
         }
+
+
 
         [HttpPost("AssignRole")]
         public async Task<IActionResult> AssignRole([FromBody] RegRequestDto model)

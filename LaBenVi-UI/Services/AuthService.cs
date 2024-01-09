@@ -18,12 +18,12 @@ namespace LaBenVi_UI.Services
 
         public async Task<ResponseDto?> SignUpAsync(RegRequestDto regRequestDto)
         {
-            const string url = "/account/register";
+            const string url = "/auth/register";
             return await _baseService.SendAsync(new RequestDto()
             {
                 ApiAction = Static_Details.ApiAction.POST,
                 Data = regRequestDto,
-                Url = Static_Details.AuthAPIBase + "/account/register",
+                Url = Static_Details.AuthAPIBase + "/api/auth/register",
             });
         }
 
@@ -36,18 +36,18 @@ namespace LaBenVi_UI.Services
             {
                 ApiAction = Static_Details.ApiAction.POST,
                 Data = loginRequestDto,
-                Url = Static_Details.AuthAPIBase + "/auth/login"
+                Url = Static_Details.AuthAPIBase + "/api/auth/login"
             });
         }
 
 
-        public async Task<ResponseDto?> RoleAssignmentAsync(RegRequestDto roleReg)
+        public async Task<ResponseDto?> RoleAssignmentAsync(RegRequestDto regRequestDto)
         {
             return await _baseService.SendAsync(new RequestDto()
             {
                 ApiAction = Static_Details.ApiAction.POST,
-                Data = roleReg,
-                Url = Static_Details.AuthAPIBase + "/auth/AssignRole"
+                Data = regRequestDto,
+                Url = Static_Details.AuthAPIBase + "/api/auth/AssignRole"
             });
         }
     }

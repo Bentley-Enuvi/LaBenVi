@@ -5,7 +5,7 @@ namespace LaBenVi_AuthService.Service.IService
 {
     public interface IAuthService
     {
-        Task<string> Register(RegRequestDto registrationRequestDto);
+        Task<string> SignUp(RegRequestDto regRequestDto);
         Task<LoginResponseDto> Login(LoginRequestDto loginRequestDto);
         Task<bool> AssignRole(string email, string roleName);
     }
