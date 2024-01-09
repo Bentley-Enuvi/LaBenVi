@@ -21,20 +21,20 @@ Static_Details.CouponAPIBase = builder.Configuration["ServiceUrls:CouponAPI"];
 Static_Details.AuthAPIBase = builder.Configuration["ServiceUrls:AuthAPI"];
 //Static_Details.ProductAPIBase = builder.Configuration["ServiceUrls:ProductAPI"];
 
-//builder.Services.AddScoped<ITokenProvider, TokenProvider>();
+builder.Services.AddScoped<ITokenProvider, TokenProvider>();
 builder.Services.AddScoped<IBaseService, BaseService>();
 //builder.Services.AddScoped<IOrderService, OrderService>();
 //builder.Services.AddScoped<IProductService, ProductService>();
 //builder.Services.AddScoped<ICartService, CartService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<ICouponService, CouponService>();
-//builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-//    .AddCookie(options =>
-//    {
-//        options.ExpireTimeSpan = TimeSpan.FromHours(10);
-//        options.LoginPath = "/Auth/Login";
-//        options.AccessDeniedPath = "/Auth/AccessDenied";
-//    });
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(options =>
+    {
+        options.ExpireTimeSpan = TimeSpan.FromHours(10);
+        options.LoginPath = "/Auth/Login";
+        options.AccessDeniedPath = "/Auth/AccessDenied";
+    });
 
 var app = builder.Build();
 

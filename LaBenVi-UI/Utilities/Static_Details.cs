@@ -11,7 +11,7 @@
 		public const string RoleAdmin = "ADMIN";
         public const string RoleEditor = "EDITOR";
         public const string RoleRegular = "REGULAR";
-		//public const string TokenCookie = "JWTToken";
+		public const string TokenCookie = "JWTToken";
 		public enum ApiAction
         {
             GET,

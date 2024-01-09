@@ -85,8 +85,8 @@ namespace LaBenVi_AuthService.Service
             }
 
             //Generate JWT Token if user was found
-           
-            var token = _jwtTokenGenerator.GenerateToken(user);
+            var roles = await _userManager.GetRolesAsync(user);
+            var token = _jwtTokenGenerator.GenerateToken(user, roles);
 
             AppUserDto userDTO = new()
             {

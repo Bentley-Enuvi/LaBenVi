@@ -17,13 +17,13 @@ namespace LaBenVi_UI.Controllers
     public class AuthController : Controller
     {
         private readonly IAuthService _authService;
-        //private readonly ITokenProvider _tokenProvider;
+        private readonly ITokenProvider _tokenProvider;
         //private readonly RoleManager<AppUser> _roleManager;
 
-        public AuthController(IAuthService authService)
+        public AuthController(IAuthService authService, ITokenProvider tokenProvider)
         {
             _authService = authService;
-            //_tokenProvider = tokenProvider;
+            _tokenProvider = tokenProvider;
         }
 
 
@@ -54,9 +54,9 @@ namespace LaBenVi_UI.Controllers
             if (response != null && response.IsSuccess)
             {
 
-                if (string.IsNullOrEmpty(model.RoleName))
+                if (string.IsNullOrEmpty(model.Role))
                 {
-                    model.RoleName = Static_Details.RoleRegular;
+                    model.Role = Static_Details.RoleRegular;
                 }
                 assignRole = await _authService.RoleAssignmentAsync(model);
 
@@ -106,8 +106,8 @@ namespace LaBenVi_UI.Controllers
                 LoginResponseDto responseDto =
                     JsonConvert.DeserializeObject<LoginResponseDto>(Convert.ToString(loginResponse.Result));
 
-                //await SignInUser(responseDto);
-                //_tokenProvider.SetToken(responseDto.Token);
+                await SignInUser(responseDto);
+                _tokenProvider.SetToken(responseDto.Token);
                 return RedirectToAction("Index", "Home");
             }
             else
@@ -119,40 +119,39 @@ namespace LaBenVi_UI.Controllers
         }
 
 
-
         public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync();
-            //_tokenProvider.ClearToken();
+            _tokenProvider.ClearToken();
             return RedirectToAction("Index", "Home");
         }
 
 
-        //private async Task SignInUser(LoginResponseDto model)
-        //{
-        //    var handler = new JwtSecurityTokenHandler();
+        private async Task SignInUser(LoginResponseDto model)
+        {
+            var handler = new JwtSecurityTokenHandler();
 
-        //    var jwt = handler.ReadJwtToken(model.Token);
+            var jwt = handler.ReadJwtToken(model.Token);
 
-        //    var identity = new ClaimsIdentity(CookieAuthenticationDefaults.AuthenticationScheme);
-        //    identity.AddClaim(new Claim(JwtRegisteredClaimNames.Email,
-        //        jwt.Claims.FirstOrDefault(u => u.Type == JwtRegisteredClaimNames.Email).Value));
-        //    identity.AddClaim(new Claim(JwtRegisteredClaimNames.Sub,
-        //        jwt.Claims.FirstOrDefault(u => u.Type == JwtRegisteredClaimNames.Sub).Value));
-        //    identity.AddClaim(new Claim(JwtRegisteredClaimNames.Name,
-        //        jwt.Claims.FirstOrDefault(u => u.Type == JwtRegisteredClaimNames.Name).Value));
-
-
-        //    identity.AddClaim(new Claim(ClaimTypes.Name,
-        //        jwt.Claims.FirstOrDefault(u => u.Type == JwtRegisteredClaimNames.Email).Value));
-        //    identity.AddClaim(new Claim(ClaimTypes.Role,
-        //        jwt.Claims.FirstOrDefault(u => u.Type == "role").Value));
+            var identity = new ClaimsIdentity(CookieAuthenticationDefaults.AuthenticationScheme);
+            identity.AddClaim(new Claim(JwtRegisteredClaimNames.Email,
+                jwt.Claims.FirstOrDefault(m => m.Type == JwtRegisteredClaimNames.Email).Value));
+            identity.AddClaim(new Claim(JwtRegisteredClaimNames.Sub,
+                jwt.Claims.FirstOrDefault(w => w.Type == JwtRegisteredClaimNames.Sub).Value));
+            identity.AddClaim(new Claim(JwtRegisteredClaimNames.Name,
+                jwt.Claims.FirstOrDefault(g => g.Type == JwtRegisteredClaimNames.Name).Value));
 
 
+            identity.AddClaim(new Claim(ClaimTypes.Name,
+                jwt.Claims.FirstOrDefault(u => u.Type == JwtRegisteredClaimNames.Email).Value));
+            identity.AddClaim(new Claim(ClaimTypes.Role,
+                jwt.Claims.FirstOrDefault(u => u.Type == "role").Value));
 
-        //    var principal = new ClaimsPrincipal(identity);
-        //    await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
-        //}
+
+
+            var principal = new ClaimsPrincipal(identity);
+            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
+        }
 
     }
 }

@@ -16,7 +16,7 @@ namespace LaBenVi_AuthService.Service
             _jwtOptions = jwtOptions.Value;
         }
 
-        public string GenerateToken(AppUser appUser)
+        public string GenerateToken(AppUser appUser, IEnumerable<string> roles)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
 
@@ -29,7 +29,7 @@ namespace LaBenVi_AuthService.Service
                 new Claim(JwtRegisteredClaimNames.Name, appUser.UserName)
             };
 
-            //claimList.AddRange(roles.Select(role => new Claim(ClaimTypes.Role, role)));
+            claimList.AddRange(roles.Select(role => new Claim(ClaimTypes.Role, role)));
 
             var tokenDescriptor = new SecurityTokenDescriptor
             {

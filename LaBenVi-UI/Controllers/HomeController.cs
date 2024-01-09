@@ -34,20 +34,6 @@ namespace LaBenVi_UI.Controllers
         }
 
 
-        public IActionResult RoleAssignment()
-        {
-
-            return View();
-        }
-
-
-        public IActionResult Login()
-        {
-
-            return View();
-        }
-
-
         //private readonly IProductService _productService;
         //private readonly ICartService _cartService;
         //public HomeController(IProductService productService, ICartService cartService)
