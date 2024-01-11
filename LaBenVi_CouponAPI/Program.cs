@@ -22,31 +22,31 @@ builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(option =>
-{
-    option.AddSecurityDefinition(name: JwtBearerDefaults.AuthenticationScheme, securityScheme: new Microsoft.OpenApi.Models.OpenApiSecurityScheme
-    {
-        Name = "Authorization",
-        Description = "Enter the Bearer's 'Generated JWT-Token' for Authorization.",
-        In = ParameterLocation.Header,
-        Type = SecuritySchemeType.ApiKey,
-        Scheme = "Bearer"
-    });
-    option.AddSecurityRequirement(new OpenApiSecurityRequirement
-    {
-        {
-            new OpenApiSecurityScheme
-            {
-                Reference = new OpenApiReference
-                {
-                    Type = ReferenceType.SecurityScheme,
-                    Id = JwtBearerDefaults.AuthenticationScheme,
-                }
-            }, new string[]{}
-        }
+//builder.Services.AddSwaggerGen(option =>
+//{
+//    option.AddSecurityDefinition(name: JwtBearerDefaults.AuthenticationScheme, securityScheme: new Microsoft.OpenApi.Models.OpenApiSecurityScheme
+//    {
+//        Name = "Authorization",
+//        Description = "Enter the Bearer's 'Generated JWT-Token' for Authorization.",
+//        In = ParameterLocation.Header,
+//        Type = SecuritySchemeType.ApiKey,
+//        Scheme = "Bearer"
+//    });
+//    option.AddSecurityRequirement(new OpenApiSecurityRequirement
+//    {
+//        {
+//            new OpenApiSecurityScheme
+//            {
+//                Reference = new OpenApiReference
+//                {
+//                    Type = ReferenceType.SecurityScheme,
+//                    Id = JwtBearerDefaults.AuthenticationScheme,
+//                }
+//            }, new string[]{}
+//        }
         
-    });
-});
+//    });
+//});
 
 //The next line of code included if the token generated is incorrect
 var settingsSection = builder.Configuration.GetSection("ApiSettings");
@@ -59,8 +59,8 @@ var key = Encoding.ASCII.GetBytes(secret);
 
 builder.Services.AddAuthentication(j =>
 {
-    j.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-    j.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+j.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+j.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
 }).AddJwtBearer(j =>
 {
     j.TokenValidationParameters = new TokenValidationParameters

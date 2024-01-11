@@ -26,9 +26,4 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\LaBenVi-AuthService\LaBenVi-AuthService.csproj" />
-    <ProjectReference Include="..\LaBenVi-UI\LaBenVi-UI.csproj" />
-  </ItemGroup>
-
 </Project>

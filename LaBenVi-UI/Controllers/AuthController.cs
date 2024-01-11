@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
 using System.Security.Claims;
 using System.IdentityModel.Tokens.Jwt;
+using System.Security.Principal;
 
 namespace LaBenVi_UI.Controllers
 {
@@ -95,7 +96,6 @@ namespace LaBenVi_UI.Controllers
 
 
         [HttpPost]
-        [AllowAnonymous]
         public async Task<IActionResult> Login(LoginRequestDto model)
         {
             ResponseDto loginResponse = await _authService.LoginAsync(model);
@@ -103,11 +103,11 @@ namespace LaBenVi_UI.Controllers
             if (loginResponse != null && loginResponse.IsSuccess)
             {
 
-                LoginResponseDto responseDto =
+                LoginResponseDto loginResponseDto =
                     JsonConvert.DeserializeObject<LoginResponseDto>(Convert.ToString(loginResponse.Result));
 
-                await SignInUser(responseDto);
-                _tokenProvider.SetToken(responseDto.Token);
+                await SignInUser(loginResponseDto);
+                _tokenProvider.SetToken(loginResponseDto.Token);
                 return RedirectToAction("Index", "Home");
             }
             else
@@ -134,19 +134,29 @@ namespace LaBenVi_UI.Controllers
             var jwt = handler.ReadJwtToken(model.Token);
 
             var identity = new ClaimsIdentity(CookieAuthenticationDefaults.AuthenticationScheme);
-            identity.AddClaim(new Claim(JwtRegisteredClaimNames.Email,
-                jwt.Claims.FirstOrDefault(m => m.Type == JwtRegisteredClaimNames.Email).Value));
-            identity.AddClaim(new Claim(JwtRegisteredClaimNames.Sub,
-                jwt.Claims.FirstOrDefault(w => w.Type == JwtRegisteredClaimNames.Sub).Value));
-            identity.AddClaim(new Claim(JwtRegisteredClaimNames.Name,
-                jwt.Claims.FirstOrDefault(g => g.Type == JwtRegisteredClaimNames.Name).Value));
 
+            if (jwt.Claims != null)
+            {
+                identity.AddClaim(new Claim(JwtRegisteredClaimNames.Email,
+                    jwt.Claims.FirstOrDefault(m => m.Type == JwtRegisteredClaimNames.Email)?.Value));
+                identity.AddClaim(new Claim(JwtRegisteredClaimNames.Sub,
+                    jwt.Claims.FirstOrDefault(w => w.Type == JwtRegisteredClaimNames.Sub)?.Value));
+                identity.AddClaim(new Claim(JwtRegisteredClaimNames.Name,
+                    jwt.Claims.FirstOrDefault(g => g.Type == JwtRegisteredClaimNames.Name)?.Value));
 
-            identity.AddClaim(new Claim(ClaimTypes.Name,
-                jwt.Claims.FirstOrDefault(u => u.Type == JwtRegisteredClaimNames.Email).Value));
-            identity.AddClaim(new Claim(ClaimTypes.Role,
-                jwt.Claims.FirstOrDefault(u => u.Type == "role").Value));
+                // Another example of a null check
+                var roleClaim = jwt.Claims.FirstOrDefault(u => u.Type == "role");
+                if (roleClaim != null)
+                {
+                    identity.AddClaim(new Claim(ClaimTypes.Role, roleClaim.Value));
+                }
 
+                identity.AddClaim(new Claim(ClaimTypes.Name,
+                    jwt.Claims.FirstOrDefault(u => u.Type == JwtRegisteredClaimNames.Email)?.Value));
+                identity.AddClaim(new Claim(ClaimTypes.Role,
+                    jwt.Claims.FirstOrDefault(u => u.Type == "role").Value));
+
+            }
 
 
             var principal = new ClaimsPrincipal(identity);
