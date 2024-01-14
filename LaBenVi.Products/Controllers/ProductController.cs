@@ -9,7 +9,7 @@ namespace LaBenVi.Products.Controllers
 {
     [Route("api/product")]
     [ApiController]
-    [Route("[controller]")]
+    //[Route("[controller]")]
     [Authorize]
     public class ProductController : ControllerBase
     {
@@ -27,6 +27,7 @@ namespace LaBenVi.Products.Controllers
 
 
         [HttpGet]
+        [AllowAnonymous]
         public ResponseDto GetAllProducts()
         {
             try
@@ -45,6 +46,7 @@ namespace LaBenVi.Products.Controllers
 
         [HttpGet]
         [Route("{id:int}")]
+        [AllowAnonymous]
         public ResponseDto GetById(int id)
         {
             try
@@ -75,37 +77,6 @@ namespace LaBenVi.Products.Controllers
                 _context.SaveChanges();
 
                 _response.Result = _mapper.Map<ProductDto>(result);
-
-                //if (productDto.ImageUrl != null)
-                //{
-
-                //    string fileName = product.ProductId + Path.GetExtension(ProductDto.Image.FileName);
-                //    string filePath = @"wwwroot\ProductImages\" + fileName;
-
-                //    //I have added the if condition to remove the any image with same name if that exist in the folder by any change
-                //    var directoryLocation = Path.Combine(Directory.GetCurrentDirectory(), filePath);
-                //    FileInfo file = new FileInfo(directoryLocation);
-                //    if (file.Exists)
-                //    {
-                //        file.Delete();
-                //    }
-
-                //    var filePathDirectory = Path.Combine(Directory.GetCurrentDirectory(), filePath);
-                //    using (var fileStream = new FileStream(filePathDirectory, FileMode.Create))
-                //    {
-                //        productDto.Image.CopyTo(fileStream);
-                //    }
-                //    var baseUrl = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host.Value}{HttpContext.Request.PathBase.Value}";
-                //    product.ImageUrl = baseUrl + "/ProductImages/" + fileName;
-                //    product.ImageLocalPath = filePath;
-                //}
-                //else
-                //{
-                //    product.ImageUrl = "https://placehold.co/600x400";
-                //}
-                //_db.Products.Update(product);
-                //_db.SaveChanges();
-                //_response.Result = _mapper.Map<ProductDto>(product);
             }
             catch (Exception ex)
             {
@@ -118,7 +89,7 @@ namespace LaBenVi.Products.Controllers
 
         [HttpPut]
         [Route("Update")]
-        [Authorize(Roles = "ADMIN, EDITOR")]
+        //[Authorize(Roles = "ADMIN, EDITOR")]
         public ResponseDto Update([FromBody] ProductDto productDto)
         {
             try
@@ -140,7 +111,8 @@ namespace LaBenVi.Products.Controllers
 
         [HttpDelete]
         [Route("{id:int}")]
-        [Authorize(Roles = "ADMIN")]
+        [AllowAnonymous]
+        //[Authorize(Roles = "ADMIN")]
         public ResponseDto Delete(int id)
         {
             try
