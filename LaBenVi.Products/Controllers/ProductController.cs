@@ -9,8 +9,7 @@ namespace LaBenVi.Products.Controllers
 {
     [Route("api/product")]
     [ApiController]
-    //[Route("[controller]")]
-    [Authorize]
+    //[Authorize]
     public class ProductController : ControllerBase
     {
         private readonly LaBenViDbContext _context;
@@ -67,7 +66,7 @@ namespace LaBenVi.Products.Controllers
         
 
         [HttpPost]
-        [Authorize(Roles = "ADMIN")]
+        //[Authorize(Roles = "ADMIN")]
         public ResponseDto Post([FromBody] ProductDto productDto)
         {
             try

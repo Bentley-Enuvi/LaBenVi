@@ -32,13 +32,14 @@ namespace LaBenVi_UI.Controllers
             return View(list);
         }
 
-        public async Task<IActionResult> ProductCreate()
+
+        public async Task<IActionResult> CreateProduct()
         {
             return View();
         }
 
         [HttpPost]
-        public async Task<IActionResult> ProductCreate(ProductDto model)
+        public async Task<IActionResult> CreateProduct(ProductDto model)
         {
             if (ModelState.IsValid)
             {
@@ -57,7 +58,7 @@ namespace LaBenVi_UI.Controllers
             return View(model);
         }
 
-        public async Task<IActionResult> ProductDelete(int productId)
+        public async Task<IActionResult> DeleteProduct(int productId)
         {
             ResponseDto? response = await _productService.GetProductByIdAsync(productId);
 
@@ -74,7 +75,7 @@ namespace LaBenVi_UI.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> ProductDelete(ProductDto productDto)
+        public async Task<IActionResult> DeleteProduct(ProductDto productDto)
         {
             ResponseDto? response = await _productService.DeleteProductsAsync(productDto.ProductId);
 
@@ -90,7 +91,7 @@ namespace LaBenVi_UI.Controllers
             return View(productDto);
         }
 
-        public async Task<IActionResult> ProductEdit(int productId)
+        public async Task<IActionResult> EditProduct(int productId)
         {
             ResponseDto? response = await _productService.GetProductByIdAsync(productId);
 
@@ -107,7 +108,7 @@ namespace LaBenVi_UI.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> ProductEdit(ProductDto productDto)
+        public async Task<IActionResult> EditProduct(ProductDto productDto)
         {
             if (ModelState.IsValid)
             {

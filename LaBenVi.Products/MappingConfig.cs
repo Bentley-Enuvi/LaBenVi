@@ -10,9 +10,7 @@ namespace LaBenVi.Products
         {
             var mappingConfig = new MapperConfiguration(config =>
             {
-                config.CreateMap<ProductDto, Product>();
-                config.CreateMap<Product, ProductDto>();
-                //config.CreateMap<UpdateCouponDto, Coupon>();
+                config.CreateMap<ProductDto, Product>().ReverseMap(); //ReverseMap will automatically reverse the order to: Product, ProductDto 
             });
             return mappingConfig;
         }
