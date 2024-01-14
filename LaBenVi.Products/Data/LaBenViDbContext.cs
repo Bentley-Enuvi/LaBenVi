@@ -1,0 +1,70 @@
+﻿using LaBenVi.Products.Models;
+using Microsoft.EntityFrameworkCore;
+
+namespace LaBenVi.Products.Data
+{
+    public class LaBenViDbContext : DbContext
+    {
+        public LaBenViDbContext(DbContextOptions<LaBenViDbContext> options) : base(options)
+        {
+        }
+
+
+        public DbSet<Product> Products { get; set; }
+
+
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+
+            modelBuilder.Entity<Product>().HasData(new Product
+            {
+                ProductId = 1,
+                Name = "High heels",
+                Price = 15,
+                Description = "Beautiful golden ladies heels for grand occassions.",
+                ImageUrl = "https://www.brasslook.com/wp-content/uploads/2018/06/Gold-High-Heels-Shoes-Ideas-18.jpg",
+                CategoryName = "Women Fashion"
+            });
+            modelBuilder.Entity<Product>().HasData(new Product
+            {
+                ProductId = 2,
+                Name = "2023 Bentley Continental GT Mulliner",
+                Price = 13.99,
+                Description = "The 2023 Bentley Mulliner Batur / Bacalar is a super-powered two-seater grand tourer that only Mulliner can create. The 2023 Bentley Mulliner batur is powered by a 6.0 liter, twin-turbocharged W12 engine that spins the rear wheels via an eight-speed automatic transmission.",
+                ImageUrl = "https://cdn.carbuzz.com/gallery-images/2023-bentley-batur-frontal-aspect-carbuzz-1030017.jpg",
+                CategoryName = "Cars"
+            });
+            modelBuilder.Entity<Product>().HasData(new Product
+            {
+                ProductId = 3,
+                Name = "Hand bag",
+                Price = 10.99,
+                Description = "Classy designers white hand bag.",
+                ImageUrl = "https://ae01.alicdn.com/kf/HTB1nvnVnOCYBuNkHFCcq6AHtVXaV/white-handbag-2019-Elegant-Shoulder-Bag-Women-designer-handbags-high-quality-pu-leather-ladies-hand-bags.jpg",
+                CategoryName = "Women Fashion"
+            });
+            modelBuilder.Entity<Product>().HasData(new Product
+            {
+                ProductId = 4,
+                Name = "Pav Bhaji",
+                Price = 15,
+                Description = "Designers suit for men.",
+                ImageUrl = "https://www.bing.com/images/search?view=detailV2&ccid=ITKK39of&id=4C3CA5085BD9EBDE7828194F715EA487657B0168&thid=OIP.ITKK39ofynUuKucW5DBIlgAAAA&mediaurl=https%3A%2F%2Fi0.wp.com%2Fwww.theunstitchd.com%2Fwp-content%2Fuploads%2F2016%2F05%2Fmen-black-suit.jpg%3Fw%3D1000&exph=713&expw=333&q=classy+male+suit&simid=607999857431368482&form=IRPRST&ck=61CABCB39CDED823D2BF81B9AE1F7829&selectedindex=0&itb=0&ajaxhist=0&ajaxserp=0&vt=0&sim=11&cdnurl=https%3A%2F%2Fth.bing.com%2Fth%2Fid%2FR.21328adfda1fca752e2ae716e4304896%3Frik%3DaAF7ZYekXnFPGQ%26pid%3DImgRaw%26r%3D0",
+                CategoryName = "Men Fashion"
+            });
+            modelBuilder.Entity<Product>().HasData(new Product
+            {
+                ProductId = 5,
+                Name = "Pizza",
+                Price = 15,
+                Description = "CHicken and vegie pizza just for your taste buds.",
+                ImageUrl = "https://picfiles.alphacoders.com/303/thumb-1920-303287.jpg",
+                CategoryName = "Dessert"
+            });
+        }
+
+    }
+}
