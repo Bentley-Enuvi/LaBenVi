@@ -1,6 +1,7 @@
 using AutoMapper;
 using LaBenVi_CouponAPI;
 using LaBenVi_CouponAPI.Data;
+using LaBenVi_CouponAPI.Extensions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -22,57 +23,34 @@ builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-//builder.Services.AddSwaggerGen(option =>
-//{
-//    option.AddSecurityDefinition(name: JwtBearerDefaults.AuthenticationScheme, securityScheme: new Microsoft.OpenApi.Models.OpenApiSecurityScheme
-//    {
-//        Name = "Authorization",
-//        Description = "Enter the Bearer's 'Generated JWT-Token' for Authorization.",
-//        In = ParameterLocation.Header,
-//        Type = SecuritySchemeType.ApiKey,
-//        Scheme = "Bearer"
-//    });
-//    option.AddSecurityRequirement(new OpenApiSecurityRequirement
-//    {
-//        {
-//            new OpenApiSecurityScheme
-//            {
-//                Reference = new OpenApiReference
-//                {
-//                    Type = ReferenceType.SecurityScheme,
-//                    Id = JwtBearerDefaults.AuthenticationScheme,
-//                }
-//            }, new string[]{}
-//        }
-        
-//    });
-//});
-
-//The next line of code included if the token generated is incorrect
-var settingsSection = builder.Configuration.GetSection("ApiSettings");
-
-var secret = settingsSection.GetValue<string>("Secret");
-var issuer = settingsSection.GetValue<string>("Issuer");
-var audience = settingsSection.GetValue<string>("Audience");
-
-var key = Encoding.ASCII.GetBytes(secret);
-
-builder.Services.AddAuthentication(j =>
+builder.Services.AddSwaggerGen(option =>
 {
-j.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-j.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-}).AddJwtBearer(j =>
-{
-    j.TokenValidationParameters = new TokenValidationParameters
+    option.AddSecurityDefinition(name: JwtBearerDefaults.AuthenticationScheme, securityScheme: new Microsoft.OpenApi.Models.OpenApiSecurityScheme
     {
-        ValidateIssuerSigningKey = true,
-        IssuerSigningKey = new SymmetricSecurityKey(key),
-        ValidateIssuer = true,
-        ValidIssuer = issuer,
-        ValidAudience = audience,
-        ValidateAudience = true
-    };
+        Name = "Authorization",
+        Description = "Enter the Bearer's 'Generated JWT-Token' for Authorization.",
+        In = ParameterLocation.Header,
+        Type = SecuritySchemeType.ApiKey,
+        Scheme = "Bearer"
+    });
+    option.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = JwtBearerDefaults.AuthenticationScheme,
+                }
+            }, new string[]{}
+        }
+
+    });
 });
+
+builder.AddAppAuthetication();
+
 builder.Services.AddAuthorization();
 
 var app = builder.Build();

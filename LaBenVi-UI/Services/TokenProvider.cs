@@ -26,7 +26,9 @@ namespace LaBenVi_UI.Services
 		public string? GetToken()
 		{
 			string? token = null;
+
 			bool? hasToken = _contextAccessor.HttpContext?.Request.Cookies.TryGetValue(Static_Details.TokenCookie, out token);
+
 			return hasToken is true ? token : null;
 		}
 

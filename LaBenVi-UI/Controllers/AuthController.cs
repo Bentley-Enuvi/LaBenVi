@@ -140,21 +140,21 @@ namespace LaBenVi_UI.Controllers
                 identity.AddClaim(new Claim(JwtRegisteredClaimNames.Email,
                     jwt.Claims.FirstOrDefault(m => m.Type == JwtRegisteredClaimNames.Email)?.Value));
                 identity.AddClaim(new Claim(JwtRegisteredClaimNames.Sub,
-                    jwt.Claims.FirstOrDefault(w => w.Type == JwtRegisteredClaimNames.Sub)?.Value));
+                    jwt.Claims.FirstOrDefault(m => m.Type == JwtRegisteredClaimNames.Sub)?.Value));
                 identity.AddClaim(new Claim(JwtRegisteredClaimNames.Name,
-                    jwt.Claims.FirstOrDefault(g => g.Type == JwtRegisteredClaimNames.Name)?.Value));
+                    jwt.Claims.FirstOrDefault(m => m.Type == JwtRegisteredClaimNames.Name)?.Value));
 
                 // Another example of a null check
-                var roleClaim = jwt.Claims.FirstOrDefault(u => u.Type == "role");
+                var roleClaim = jwt.Claims.FirstOrDefault(m => m.Type == "role");
                 if (roleClaim != null)
                 {
                     identity.AddClaim(new Claim(ClaimTypes.Role, roleClaim.Value));
                 }
 
                 identity.AddClaim(new Claim(ClaimTypes.Name,
-                    jwt.Claims.FirstOrDefault(u => u.Type == JwtRegisteredClaimNames.Email)?.Value));
-                identity.AddClaim(new Claim(ClaimTypes.Role,
-                    jwt.Claims.FirstOrDefault(u => u.Type == "role").Value));
+                    jwt.Claims.FirstOrDefault(m => m.Type == JwtRegisteredClaimNames.Email)?.Value));
+                //identity.AddClaim(new Claim(ClaimTypes.Role,
+                //    jwt.Claims.FirstOrDefault(m => m.Type == "role").Value));
 
             }
 
