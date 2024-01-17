@@ -7,7 +7,7 @@ namespace LaBenVi_UI.Services.IServices
         Task<ResponseDto?> GetCartByUserIdAsync(string userId);
         Task<ResponseDto?> UpsertCartAsync(CartDto cartDto);
         Task<ResponseDto?> RemoveFromCartAsync(int cartDetailsId);
-        Task<ResponseDto?> AddCouponAsync(CartDto cartDto);
+        Task<ResponseDto?> ApplyCouponAsync(CartDto cartDto);
         //Task<ResponseDto?> EmailCart(CartDto cartDto);
     }
 }

@@ -87,8 +87,8 @@ namespace LaBenVi_CartAPI.Controllers
 
 
 
-        [HttpPost("AddCoupon")]
-        public async Task<object> AddCoupon([FromBody] CartDto cartDto)
+        [HttpPost("ApplyCoupon")]
+        public async Task<object> ApplyCoupon([FromBody] CartDto cartDto)
         {
             try
             {

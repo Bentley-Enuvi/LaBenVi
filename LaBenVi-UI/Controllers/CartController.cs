@@ -97,11 +97,13 @@ namespace LaBenVi_UI.Controllers
             return View();
         }
 
+
+
         [HttpPost]
-        public async Task<IActionResult> AddCoupon(CartDto cartDto)
+        public async Task<IActionResult> ApplyCoupon(CartDto cartDto)
         {
 
-            ResponseDto? response = await _cartService.AddCouponAsync(cartDto);
+            ResponseDto? response = await _cartService.ApplyCouponAsync(cartDto);
             if (response != null & response.IsSuccess)
             {
                 TempData["success"] = "Cart updated successfully";
@@ -131,7 +133,7 @@ namespace LaBenVi_UI.Controllers
         public async Task<IActionResult> RemoveCoupon(CartDto cartDto)
         {
             cartDto.CartHeader.CouponCode = "";
-            ResponseDto? response = await _cartService.AddCouponAsync(cartDto);
+            ResponseDto? response = await _cartService.ApplyCouponAsync(cartDto);
             if (response != null & response.IsSuccess)
             {
                 TempData["success"] = "Cart updated successfully";

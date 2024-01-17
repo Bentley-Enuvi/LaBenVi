@@ -12,7 +12,7 @@ namespace LaBenVi_UI.Services
             _baseService = baseService;
         }
 
-        public async Task<ResponseDto?> AddCouponAsync(CartDto cartDto)
+        public async Task<ResponseDto?> ApplyCouponAsync(CartDto cartDto)
         {
             return await _baseService.SendAsync(new RequestDto()
             {
