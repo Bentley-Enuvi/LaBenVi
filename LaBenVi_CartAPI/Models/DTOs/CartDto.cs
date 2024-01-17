@@ -1,4 +1,4 @@
-﻿namespace LaBenVi_UI.Models
+﻿namespace LaBenVi_CartAPI.Models.DTOs
 {
     public class CartDto
     {

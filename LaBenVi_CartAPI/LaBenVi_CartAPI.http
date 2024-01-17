@@ -1,0 +1,6 @@
+@LaBenVi_CartAPI_HostAddress = http://localhost:5228
+
+GET {{LaBenVi_CartAPI_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
