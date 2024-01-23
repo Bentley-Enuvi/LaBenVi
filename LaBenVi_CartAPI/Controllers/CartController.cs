@@ -3,6 +3,7 @@ using LaBenVi_CartAPI.Data;
 using LaBenVi_CartAPI.Models;
 using LaBenVi_CartAPI.Models.DTOs;
 using LaBenVi_CartAPI.Services;
+using MessageRoute;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -20,15 +21,18 @@ namespace LaBenVi_CartAPI.Controllers
         private readonly LaBenViDbContext _context;
         private IProductService _productService;
         private ICouponService _couponService;
+        private readonly IMessageService _messageService;
 
         public CartController(LaBenViDbContext context, IMapper mapper, 
-            IProductService productService, ICouponService couponService)
+            IProductService productService, ICouponService couponService,
+            IMessageService messageService)
         {
             _context = context;
             this._response = new ResponseDto();
             _mapper = mapper;
             _productService = productService;
             _couponService = couponService;
+            _messageService = messageService;
         }
         
 
@@ -128,21 +132,21 @@ namespace LaBenVi_CartAPI.Controllers
 
 
 
-        //[HttpPost("EmailCartRequest")]
-        //public async Task<object> EmailCartRequest([FromBody] CartDto cartDto)
-        //{
-        //    try
-        //    {
-        //        await _messageBus.PublishMessage(cartDto, _configuration.GetValue<string>("TopicAndQueueNames:EmailShoppingCartQueue"));
-        //        _response.Result = true;
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        _response.IsSuccess = false;
-        //        _response.Message = ex.ToString();
-        //    }
-        //    return _response;
-        //}
+        [HttpPost("EmailCartRequest")]
+        public async Task<object> EmailCartRequest([FromBody] CartDto cartDto)
+        {
+            try
+            {
+                await _messageService.Send(cartDto, _configuration.GetValue<string>("TopicAndQueueNames:EmailShoppingCartQueue"));
+                _response.Result = true;
+            }
+            catch (Exception ex)
+            {
+                _response.IsSuccess = false;
+                _response.Message = ex.ToString();
+            }
+            return _response;
+        }
 
 
 

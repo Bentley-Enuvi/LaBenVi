@@ -56,7 +56,7 @@ namespace LaBenVi_AuthService.Service
 
                     };
 
-                    return "";
+                    return "Registration successful.";
 
                 }
                 else

@@ -5,6 +5,7 @@ using LaBenVi_CartAPI.Extensions;
 using LaBenVi_CartAPI.Services;
 using LaBenVi_CartAPI.Services.Implementation;
 using LaBenVi_CartAPI.Utility;
+using MessageRoute;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
@@ -21,6 +22,7 @@ builder.Services.AddSingleton(mapper);
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<ICouponService, CouponService>();
 builder.Services.AddHttpContextAccessor();
+builder.Services.AddScoped<IMessageService, MessageService>();
 builder.Services.AddScoped<BackendApiAuthenticationHttpClientHandler>();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddHttpClient("Product", u => u.BaseAddress =

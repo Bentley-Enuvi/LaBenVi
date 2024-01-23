@@ -1,5 +1,4 @@
-﻿
-using LaBenVi_AuthService.Models;
+﻿using LaBenVi_AuthService.Models;
 
 namespace LaBenVi_AuthService.Service.IService
 {
