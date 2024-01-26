@@ -14,6 +14,7 @@ namespace LaBenVi_AuthService.Data
         }
 
         public DbSet<AppUser> AppUsers { get; set; }
+        public DbSet<EmailLogger> EmailLoggers { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

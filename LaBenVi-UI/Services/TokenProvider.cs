@@ -31,7 +31,5 @@ namespace LaBenVi_UI.Services
 
 			return hasToken is true ? token : null;
 		}
-
-		
-	}
+    }
 }

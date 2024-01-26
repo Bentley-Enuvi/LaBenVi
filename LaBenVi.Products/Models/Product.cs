@@ -8,7 +8,7 @@ namespace LaBenVi.Products.Models
         public int ProductId { get; set; }
         [Required]
         public string Name { get; set; }
-        [Range(1, 1000)]
+        [Range(1, 99000)]
         public double Price { get; set; }
         public string Description { get; set; }
         public string CategoryName { get; set; }

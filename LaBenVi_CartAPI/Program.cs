@@ -1,11 +1,12 @@
 using AutoMapper;
+using LaBenVi_AuthService.Service;
+using LaBenVi_AuthService.Service.IService;
 using LaBenVi_CartAPI;
 using LaBenVi_CartAPI.Data;
 using LaBenVi_CartAPI.Extensions;
 using LaBenVi_CartAPI.Services;
 using LaBenVi_CartAPI.Services.Implementation;
 using LaBenVi_CartAPI.Utility;
-using MessageRoute;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
@@ -19,10 +20,11 @@ builder.Services.AddDbContext<LaBenViDbContext>(option =>
 });
 IMapper mapper = MappingConfig.MapsReg().CreateMapper();
 builder.Services.AddSingleton(mapper);
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<ICouponService, CouponService>();
 builder.Services.AddHttpContextAccessor();
-builder.Services.AddScoped<IMessageService, MessageService>();
+//builder.Services.AddScoped<IMessageService, MessageService>();
 builder.Services.AddScoped<BackendApiAuthenticationHttpClientHandler>();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddHttpClient("Product", u => u.BaseAddress =
@@ -67,7 +69,14 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(c =>
+    {
+        if (!app.Environment.IsDevelopment())
+        {
+            c.SwaggerEndpoint("/swagger/v1/swagger.json", "Cart API");
+            c.RoutePrefix = string.Empty;
+        }
+    });
 }
 
 app.UseHttpsRedirection();

@@ -1,9 +1,9 @@
 using AutoMapper;
+using LaBenVi_AuthService.Service.IService;
 using LaBenVi_CartAPI.Data;
 using LaBenVi_CartAPI.Models;
 using LaBenVi_CartAPI.Models.DTOs;
 using LaBenVi_CartAPI.Services;
-using MessageRoute;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -22,10 +22,11 @@ namespace LaBenVi_CartAPI.Controllers
         private IProductService _productService;
         private ICouponService _couponService;
         private readonly IMessageService _messageService;
+        private readonly IConfiguration _configuration;
 
         public CartController(LaBenViDbContext context, IMapper mapper, 
             IProductService productService, ICouponService couponService,
-            IMessageService messageService)
+            IConfiguration configuration, IMessageService messageService)
         {
             _context = context;
             this._response = new ResponseDto();
@@ -33,6 +34,7 @@ namespace LaBenVi_CartAPI.Controllers
             _productService = productService;
             _couponService = couponService;
             _messageService = messageService;
+            _configuration = configuration;
         }
         
 
@@ -131,22 +133,26 @@ namespace LaBenVi_CartAPI.Controllers
         }
 
 
-
+        //Send in-message to the cart
         [HttpPost("EmailCartRequest")]
-        public async Task<object> EmailCartRequest([FromBody] CartDto cartDto)
+        public async Task<IActionResult> EmailCartRequest([FromBody] CartDto cartDto)
         {
             try
             {
-                await _messageService.Send(cartDto, _configuration.GetValue<string>("TopicAndQueueNames:EmailShoppingCartQueue"));
-                _response.Result = true;
+                string toEmail = "user@example.com"; // Replace with the actual recipient's email address
+                string subject = "Your Cart Details";
+                string body = "Here are the details of your cart: ..."; // Replace with the actual content of the email
+
+                await _messageService.SendEmailAsync(toEmail, subject, body);
+
+                return Ok(new { isSuccess = true, message = "Email sent successfully." });
             }
             catch (Exception ex)
             {
-                _response.IsSuccess = false;
-                _response.Message = ex.ToString();
+                return StatusCode(500, new { isSuccess = false, message = ex.Message });
             }
-            return _response;
         }
+
 
 
 

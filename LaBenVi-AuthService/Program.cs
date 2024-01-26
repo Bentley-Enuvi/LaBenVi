@@ -18,11 +18,17 @@ builder.Services.AddDbContext<LaBenViDbContext>(option =>
     option.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
 builder.Services.Configure<JwtOptions>(builder.Configuration.GetSection("ApiSettings:JwtOptions"));
+builder.Services.Configure<IdentityDefaultOptions>(builder.Configuration.GetSection("IdentityDefaultOptions"));
+builder.Services.Configure<MailSettings>(builder.Configuration.GetSection("EmailSettings"));
+builder.Services.AddTransient<IMessengerService, MailgunMessengerService>();
 builder.Services.AddIdentity<AppUser, IdentityRole>().AddEntityFrameworkStores<LaBenViDbContext>()
     .AddDefaultTokenProviders();
 builder.Services.AddControllers();
 builder.Services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IUserManagementService, UserManagementService>();
+builder.Services.AddScoped<IRepository, Repository>();
+//builder.Services.AddScoped<IMessageService, MessageService>();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

@@ -23,14 +23,16 @@ namespace LaBenVi_UI.Services
             });
         }
 
-        public async Task<ResponseDto?> DeleteProductsAsync(int id)
+
+        public async Task<ResponseDto?> GetProductByIdAsync(int id)
         {
             return await _baseService.SendAsync(new RequestDto()
             {
-                ApiAction = Static_Details.ApiAction.DELETE,
+                ApiAction = Static_Details.ApiAction.GET,
                 Url = Static_Details.ProductAPIBase + "/api/product/" + id
             });
         }
+
 
         public async Task<ResponseDto?> GetAllProductsAsync()
         {
@@ -42,16 +44,6 @@ namespace LaBenVi_UI.Services
         }
 
 
-
-        public async Task<ResponseDto?> GetProductByIdAsync(int id)
-        {
-            return await _baseService.SendAsync(new RequestDto()
-            {
-                ApiAction = Static_Details.ApiAction.GET,
-                Url = Static_Details.ProductAPIBase + "/api/product/" + id
-            });
-        }
-
         public async Task<ResponseDto?> UpdateProductsAsync(ProductDto productDto)
         {
             return await _baseService.SendAsync(new RequestDto()
@@ -62,5 +54,17 @@ namespace LaBenVi_UI.Services
                 ContentType = Static_Details.ContentType.MultipartFormData
             });
         }
+
+
+        public async Task<ResponseDto?> DeleteProductsAsync(int id)
+        {
+            return await _baseService.SendAsync(new RequestDto()
+            {
+                ApiAction = Static_Details.ApiAction.DELETE,
+                Url = Static_Details.ProductAPIBase + "/api/product/" + id
+            });
+        }
+
+
     }
 }

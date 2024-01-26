@@ -12,6 +12,18 @@ namespace LaBenVi_UI.Services
             _baseService = baseService;
         }
 
+
+
+        public async Task<ResponseDto?> UpsertCartAsync(CartDto cartDto)
+        {
+            return await _baseService.SendAsync(new RequestDto()
+            {
+                ApiAction = Static_Details.ApiAction.POST,
+                Data = cartDto,
+                Url = Static_Details.CartAPIBase + "/api/cart/CartUpsert"
+            });
+        }
+
         public async Task<ResponseDto?> ApplyCouponAsync(CartDto cartDto)
         {
             return await _baseService.SendAsync(new RequestDto()
@@ -22,15 +34,17 @@ namespace LaBenVi_UI.Services
             });
         }
 
-        public async Task<ResponseDto?> EmailCart(CartDto cartDto)
-        {
-            return await _baseService.SendAsync(new RequestDto()
-            {
-                ApiAction = Static_Details.ApiAction.POST,
-                Data = cartDto,
-                Url = Static_Details.CartAPIBase + "/api/cart/EmailCartRequest"
-            });
-        }
+
+        //Work on this to fit the mailing service you have
+        //public async Task<ResponseDto?> EmailCart(CartDto cartDto)
+        //{
+        //    return await _baseService.SendAsync(new RequestDto()
+        //    {
+        //        ApiAction = Static_Details.ApiAction.POST,
+        //        Data = cartDto,
+        //        Url = Static_Details.CartAPIBase + "/api/cart/EmailCartRequest"
+        //    });
+        //}
 
         public async Task<ResponseDto?> GetCartByUserIdAsync(string userId)
         {
@@ -40,6 +54,7 @@ namespace LaBenVi_UI.Services
                 Url = Static_Details.CartAPIBase + "/api/cart/GetCart/" + userId
             });
         }
+
 
 
         public async Task<ResponseDto?> RemoveFromCartAsync(int cartDetailsId)
@@ -52,15 +67,5 @@ namespace LaBenVi_UI.Services
             });
         }
 
-
-        public async Task<ResponseDto?> UpsertCartAsync(CartDto cartDto)
-        {
-            return await _baseService.SendAsync(new RequestDto()
-            {
-                ApiAction = Static_Details.ApiAction.POST,
-                Data = cartDto,
-                Url = Static_Details.CartAPIBase + "/api/cart/CartUpsert"
-            });
-        }
     }
 }
