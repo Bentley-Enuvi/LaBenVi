@@ -1,10 +1,46 @@
-﻿namespace LaBenVi_AuthService.Models
+﻿
+
+namespace LaBenVi_AuthService.Models
 {
     public class EmailLogger
     {
+        private string sender;
+        private List<string> list;
+        private string subject;
+
+        public EmailLogger()
+        {
+        }
+
+        public EmailLogger(string sender, List<string> list, string subject)
+        {
+            this.sender = sender;
+            this.list = list;
+            this.subject = subject;
+        }
+
         public EmailLogger(string subject, IList<string> to, string body, string from)
         {
-            // Validation
+            // Validation (moved from constructor to separate validation method)
+            ValidateArguments(subject, to, body, from);
+
+            Subject = subject;
+            To = to;
+            Body = body;
+            From = from;
+        }
+
+        public int Id { get; set; }
+        public string Subject { get; set; }
+        public string Body { get; set; }
+        public string From { get; set; }
+        public IList<string> To { get; set; }
+
+        // Navigation property to related entities (if needed)
+        
+        // Validation method for constructor arguments
+        private void ValidateArguments(string subject, IList<string> to, string body, string from)
+        {
             if (string.IsNullOrWhiteSpace(subject))
                 throw new ArgumentException("Subject cannot be null or empty.", nameof(subject));
 
@@ -16,17 +52,7 @@
 
             if (string.IsNullOrWhiteSpace(from))
                 throw new ArgumentException("Sender email address cannot be null or empty.", nameof(from));
-
-            Subject = subject;
-            To = to;
-            Body = body;
-            From = from;
         }
-
-        public string Subject { get; }
-        public IList<string> To { get; }
-        public string Body { get; }
-        public string From { get; }
     }
 
 }

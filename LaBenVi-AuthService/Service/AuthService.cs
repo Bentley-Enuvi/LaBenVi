@@ -39,6 +39,8 @@ namespace LaBenVi_AuthService.Service
                 PhoneNumber = regRequestDto.PhoneNumber,
                 Address = regRequestDto.Address,
                 Password = regRequestDto.Password
+                
+                
             };
 
             try
@@ -47,6 +49,7 @@ namespace LaBenVi_AuthService.Service
                 if (result.Succeeded)
                 {
                     var userToReturn = _context.AppUsers.First(u => u.UserName == regRequestDto.Email);
+                    var roles = await _userManager.GetRolesAsync(userToReturn);
 
                     AppUserDto userDto = new()
                     {
@@ -56,7 +59,8 @@ namespace LaBenVi_AuthService.Service
                         PhoneNumber = userToReturn.PhoneNumber,
                         Address = userToReturn.Address,
                         Password = userToReturn.Password,
-
+                        ImageUrl = userToReturn.ImageUrl,
+                        RoleName = roles
                     };
 
                     return "Registration successful.";
@@ -150,6 +154,7 @@ namespace LaBenVi_AuthService.Service
                 var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                 var confirmationLink = $"{confirmEmailAddress}?token={token}&email={user.Email}";
 
+                var senderEmail = "labenvi@gmail.com";
                 var message = new EmailLogger(
                     "Email Confirmation",
                     new List<string> { user.Email },

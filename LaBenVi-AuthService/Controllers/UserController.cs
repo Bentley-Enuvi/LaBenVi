@@ -92,22 +92,37 @@ namespace LaBenVi_AuthService.Controllers
 
         // [Authorize(Roles = "ADMIN")]
         [HttpPut("update/{id}")]
-        public ResponseDto UpdateUser([FromBody] AppUserUpdateRequestDto appUserDTO)
+        public async Task<IActionResult> UpdateUser(
+            string id,
+            [FromBody] AppUserUpdateRequestDto appUserDTO)
         {
-            try
-            {
-                AppUser result = _mapper.Map<AppUser>(appUserDTO);
-                _context.AppUsers.Update(result);
-                _context.SaveChanges();
+            var result = await _userService.UpdateUser(id, appUserDTO);
 
-                _response.Result = _mapper.Map<AppUserUpdateRequestDto>(result);
-            }
-            catch (Exception ex)
+            if (result != null)
             {
-                _response.IsSuccess = false;
-                _response.Message = ex.Message;
+                var response = new ResponseDto
+                {
+                    Code = 200,
+                    Result = result,
+                    Message = "User Updated Successfully",
+                    Error = string.Empty,
+                    IsSuccess = true
+                };
+
+                return Ok(response);
             }
-            return _response;
+            else
+            {
+                var response = new ResponseDto
+                {
+                    Code = (int)HttpStatusCode.BadRequest,
+                    Result = null,
+                    Message = "Failed to update User",
+                    Error = "Failed"
+                };
+
+                return BadRequest(response);
+            }
         }
     }
 }

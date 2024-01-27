@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LaBenVi_AuthService.Migrations
 {
     [DbContext(typeof(LaBenViDbContext))]
-    [Migration("20240126192603_addMailUsers")]
-    partial class addMailUsers
+    [Migration("20240127111526_Auth-migration")]
+    partial class Authmigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -41,12 +41,21 @@ namespace LaBenVi_AuthService.Migrations
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Email")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
+
+                    b.Property<string>("ImageUrl")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
@@ -85,6 +94,9 @@ namespace LaBenVi_AuthService.Migrations
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("bit");
 
+                    b.Property<DateTime>("UpdatedOn")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("UserName")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
@@ -114,10 +126,7 @@ namespace LaBenVi_AuthService.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime?>("EmailSent")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Message")
+                    b.Property<string>("From")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 

@@ -13,7 +13,7 @@ namespace LaBenVi_AuthService.Controllers
     public class AuthAPIController : Controller
     {
         private readonly IAuthService _authService;
-        //private readonly IMessageService _messageService;
+        private readonly IMessengerService _messengerService;
         private readonly IConfiguration _configuration;
         protected ResponseDto _response;
         private readonly UserManager<AppUser> _userManager;
@@ -21,30 +21,39 @@ namespace LaBenVi_AuthService.Controllers
 
         public AuthAPIController(IAuthService authService, 
             IConfiguration configuration,
-            UserManager<AppUser> userManager)
+            UserManager<AppUser> userManager,
+            IMessengerService messengerService)
         {
             _authService = authService;
             _configuration = configuration;
             _jsonConfirm = new();
             _response = new();
             _userManager = userManager;
+            _messengerService = messengerService;
         }
 
 
 
         [HttpPost("register")]
-        public async Task<IActionResult> Register([FromBody] RegRequestDto model)
+        public async Task<IActionResult> SignUp([FromBody] RegRequestDto model)
         {
-
             var errorMessage = await _authService.SignUp(model);
             if (!string.IsNullOrEmpty(errorMessage))
             {
+                if (errorMessage.Contains("already taken"))
+                {
+                    // User already exists, consider it a success
+                    _response.IsSuccess = true;
+                    return Ok(_response);
+                }
+
                 _response.IsSuccess = false;
                 _response.Message = errorMessage;
                 return BadRequest(_response);
             }
-            //await _messageBus.PublishMessage(model.Email, _configuration.GetValue<string>("TopicAndQueueNames:RegisterUserQueue"));
-                return Ok(_response);
+            //await _messengerService.Send(model.Email, _configuration.GetValue<string>("BodyNames:RegisterUserBody"));
+            _response.IsSuccess = true;
+            return Ok(_response);
         }
 
 

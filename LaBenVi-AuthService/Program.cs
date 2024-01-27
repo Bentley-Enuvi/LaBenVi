@@ -1,4 +1,5 @@
 using AutoMapper;
+using LaBenVi_AuthService;
 using LaBenVi_AuthService.Data;
 using LaBenVi_AuthService.Models;
 using LaBenVi_AuthService.Service;
@@ -17,6 +18,9 @@ builder.Services.AddDbContext<LaBenViDbContext>(option =>
 {
     option.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
+IMapper mapper = MappingConfig.MapsReg().CreateMapper();
+builder.Services.AddSingleton(mapper);
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.Configure<JwtOptions>(builder.Configuration.GetSection("ApiSettings:JwtOptions"));
 builder.Services.Configure<IdentityDefaultOptions>(builder.Configuration.GetSection("IdentityDefaultOptions"));
 builder.Services.Configure<MailSettings>(builder.Configuration.GetSection("EmailSettings"));
@@ -26,7 +30,7 @@ builder.Services.AddIdentity<AppUser, IdentityRole>().AddEntityFrameworkStores<L
 builder.Services.AddControllers();
 builder.Services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();
 builder.Services.AddScoped<IAuthService, AuthService>();
-builder.Services.AddScoped<IUserManagementService, UserManagementService>();
+builder.Services.AddTransient<IUserManagementService, UserManagementService>();
 builder.Services.AddScoped<IRepository, Repository>();
 //builder.Services.AddScoped<IMessageService, MessageService>();
 
