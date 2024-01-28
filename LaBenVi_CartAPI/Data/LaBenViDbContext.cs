@@ -12,6 +12,7 @@ namespace LaBenVi_CartAPI.Data
 
         public DbSet<CartHeader> CartHeaders { get; set; }
         public DbSet<CartDetails> CartDetails { get; set; }
+        public DbSet<AppUser> AppUsers { get; set; }
 
     }
 }

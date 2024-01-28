@@ -4,6 +4,7 @@ using LaBenVi_CartAPI.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LaBenVi_CartAPI.Migrations
 {
     [DbContext(typeof(LaBenViDbContext))]
-    partial class LaBenViDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240128202933_addAppUsersToCart")]
+    partial class addAppUsersToCart
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

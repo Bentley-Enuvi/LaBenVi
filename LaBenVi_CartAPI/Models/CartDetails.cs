@@ -13,6 +13,7 @@ namespace LaBenVi_CartAPI.Models
         [ForeignKey("CartHeaderId")]
         public CartHeader CartHeader { get; set; }
         public int ProductId { get; set; }
+        public string UserId { get; set; }
         [NotMapped]
         public ProductDto Product { get; set; }
         public int Count { get; set; }

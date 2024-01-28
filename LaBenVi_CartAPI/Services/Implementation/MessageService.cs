@@ -13,17 +13,18 @@ namespace LaBenVi_CartAPI.Services.Implementation
 
         public MessageService(IConfiguration config)
         {
-            _senderEmail = config["EmailSettings:SenderEmail"];
+            _senderEmail = config["EmailSettings:senderEmail"];
 
             // Initialize SmtpClient with SMTP server settings from configuration
             _smtpClient = new SmtpClient
             {
-                Host = config["EmailSettings:Host"],
-                Port = int.Parse(config["EmailSettings:Port"]),
-                EnableSsl = bool.Parse(config["EmailSettings:EnableSsl"]),
+                Host = config["EmailSettings:host"],
+                Port = int.Parse(config["EmailSettings:port"]),
+                //EnableSsl = bool.Parse(config["EmailSettings:senderEmail"]),
                 Credentials = new NetworkCredential(
-                    config["EmailSettings:Username"],
-                    config["EmailSettings:Password"])
+                    config["EmailSettings:senderName"],
+                    config["EmailSettings:appPassword"],
+                    config["EmailSettings:senderEmail"])
             };
         }
 

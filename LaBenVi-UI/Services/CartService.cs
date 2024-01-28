@@ -36,15 +36,15 @@ namespace LaBenVi_UI.Services
 
 
         //Work on this to fit the mailing service you have
-        //public async Task<ResponseDto?> EmailCart(CartDto cartDto)
-        //{
-        //    return await _baseService.SendAsync(new RequestDto()
-        //    {
-        //        ApiAction = Static_Details.ApiAction.POST,
-        //        Data = cartDto,
-        //        Url = Static_Details.CartAPIBase + "/api/cart/EmailCartRequest"
-        //    });
-        //}
+        public async Task<ResponseDto?> EmailCart(CartDto cartDto)
+        {
+            return await _baseService.SendAsync(new RequestDto()
+            {
+                ApiAction = Static_Details.ApiAction.POST,
+                Data = cartDto,
+                Url = Static_Details.CartAPIBase + "/api/cart/EmailCartRequest"
+            });
+        }
 
         public async Task<ResponseDto?> GetCartByUserIdAsync(string userId)
         {
