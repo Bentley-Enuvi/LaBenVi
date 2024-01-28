@@ -8,7 +8,6 @@ namespace LaBenVi_CartAPI.Extensions
     {
         public static WebApplicationBuilder AddAppAuthetication(this WebApplicationBuilder builder)
         {
-            //The next line of code included if the token generated is incorrect
             var settingsSection = builder.Configuration.GetSection("ApiSettings");
 
             var secret = settingsSection.GetValue<string>("Secret");
@@ -34,7 +33,7 @@ namespace LaBenVi_CartAPI.Extensions
                     ValidateAudience = true
                 };
             });
-            //builder.Services.AddAuthorization();
+
             return builder;
         }
     }

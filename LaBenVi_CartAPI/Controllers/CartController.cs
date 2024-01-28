@@ -1,5 +1,4 @@
 using AutoMapper;
-using LaBenVi_AuthService.Service.IService;
 using LaBenVi_CartAPI.Data;
 using LaBenVi_CartAPI.Models;
 using LaBenVi_CartAPI.Models.DTOs;
@@ -139,7 +138,7 @@ namespace LaBenVi_CartAPI.Controllers
         {
             try
             {
-                string toEmail = "user@example.com"; // Replace with the actual recipient's email address
+                string toEmail = "bentleyenuvi@gmail.com"; // Replace with the actual recipient's email address
                 string subject = "Your Cart Details";
                 string body = "Here are the details of your cart: ..."; // Replace with the actual content of the email
 

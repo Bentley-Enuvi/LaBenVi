@@ -1,4 +1,5 @@
-﻿using LaBenVi_AuthService.Models;
+﻿using AutoMapper;
+using LaBenVi_AuthService.Models;
 using LaBenVi_AuthService.Models.Dto;
 using LaBenVi_AuthService.Service.IService;
 using Microsoft.AspNetCore.Authorization;
@@ -18,11 +19,13 @@ namespace LaBenVi_AuthService.Controllers
         protected ResponseDto _response;
         private readonly UserManager<AppUser> _userManager;
         protected JsonConfirmDto _jsonConfirm;
+        private readonly IMapper _mapper;
 
         public AuthAPIController(IAuthService authService, 
             IConfiguration configuration,
             UserManager<AppUser> userManager,
-            IMessengerService messengerService)
+            IMessengerService messengerService,
+            IMapper mapper)
         {
             _authService = authService;
             _configuration = configuration;
@@ -30,6 +33,7 @@ namespace LaBenVi_AuthService.Controllers
             _response = new();
             _userManager = userManager;
             _messengerService = messengerService;
+            _mapper = mapper;
         }
 
 
@@ -37,23 +41,19 @@ namespace LaBenVi_AuthService.Controllers
         [HttpPost("register")]
         public async Task<IActionResult> SignUp([FromBody] RegRequestDto model)
         {
-            var errorMessage = await _authService.SignUp(model);
-            if (!string.IsNullOrEmpty(errorMessage))
-            {
-                if (errorMessage.Contains("already taken"))
-                {
-                    // User already exists, consider it a success
-                    _response.IsSuccess = true;
-                    return Ok(_response);
-                }
+            var registerResult = await _authService.SignUp(model);
 
-                _response.IsSuccess = false;
-                _response.Message = errorMessage;
-                return BadRequest(_response);
+            if (registerResult.IsFailure)
+            {
+                return BadRequest(ResponseObjectDto<object>.Failure(registerResult.Errors));
             }
-            //await _messengerService.Send(model.Email, _configuration.GetValue<string>("BodyNames:RegisterUserBody"));
-            _response.IsSuccess = true;
-            return Ok(_response);
+
+            //Add Token to verify the email
+            var user = _mapper.Map<AppUser>(registerResult.Data);
+            var appUrl = $"{Request.Scheme}://{Request.Host}";
+            var confirmEmailEndpoint = $"{appUrl}/confirmemail";
+            var confirmationEmailSent = await _authService.SendConfirmationEmailAsync2(user, confirmEmailEndpoint);
+            return Ok(ResponseObjectDto<object>.Success(registerResult.Data));
         }
 
 

@@ -28,7 +28,7 @@ namespace LaBenVi_AuthService.Service
         }
 
 
-        public async Task<string> SignUp(RegRequestDto regRequestDto)
+        public async Task<Result<AppUserDto>> SignUp(RegRequestDto regRequestDto)
         {
             AppUser user = new()
             {
@@ -43,40 +43,27 @@ namespace LaBenVi_AuthService.Service
                 
             };
 
-            try
+            var result = await _userManager.CreateAsync(user, regRequestDto.Password);
+            if (!result.Succeeded)
+                return Result.Failure<AppUserDto>(result.Errors.Select(e => new Error(e.Code, e.Description)));
+
+            var userToReturn = _context.AppUsers.First(u => u.UserName == regRequestDto.Email);
+            var roles = await _userManager.GetRolesAsync(userToReturn);
+
+            AppUserDto userDto = new()
             {
-                var result = await _userManager.CreateAsync(user, regRequestDto.Password);
-                if (result.Succeeded)
-                {
-                    var userToReturn = _context.AppUsers.First(u => u.UserName == regRequestDto.Email);
-                    var roles = await _userManager.GetRolesAsync(userToReturn);
+                Email = userToReturn.Email,
+                ID = userToReturn.Id,
+                Name = userToReturn.Name,
+                PhoneNumber = userToReturn.PhoneNumber,
+                Address = userToReturn.Address,
+                Password = userToReturn.Password,
+                ImageUrl = userToReturn.ImageUrl,
+                RoleName = roles
+            };
 
-                    AppUserDto userDto = new()
-                    {
-                        Email = userToReturn.Email,
-                        ID = userToReturn.Id,
-                        Name = userToReturn.Name,
-                        PhoneNumber = userToReturn.PhoneNumber,
-                        Address = userToReturn.Address,
-                        Password = userToReturn.Password,
-                        ImageUrl = userToReturn.ImageUrl,
-                        RoleName = roles
-                    };
+            return Result.Success(userDto);
 
-                    return "Registration successful.";
-
-                }
-                else
-                {
-                    return result.Errors.FirstOrDefault().Description;
-                }
-
-            }
-            catch (Exception ex)
-            {
-
-            }
-            return "Error Encountered";
         }
 
 

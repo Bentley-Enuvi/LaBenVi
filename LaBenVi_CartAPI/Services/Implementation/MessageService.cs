@@ -1,5 +1,4 @@
 ﻿using Azure.Messaging.ServiceBus;
-using LaBenVi_AuthService.Models;
 using Newtonsoft.Json;
 using System.Net.Mail;
 using System.Net;

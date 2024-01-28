@@ -1,6 +1,4 @@
 using AutoMapper;
-using LaBenVi_AuthService.Service;
-using LaBenVi_AuthService.Service.IService;
 using LaBenVi_CartAPI;
 using LaBenVi_CartAPI.Data;
 using LaBenVi_CartAPI.Extensions;
@@ -22,11 +20,10 @@ IMapper mapper = MappingConfig.MapsReg().CreateMapper();
 builder.Services.AddSingleton(mapper);
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddScoped<IProductService, ProductService>();
-builder.Services.AddScoped<ICouponService, CouponService>();
 builder.Services.AddHttpContextAccessor();
-//builder.Services.AddScoped<IMessageService, MessageService>();
 builder.Services.AddScoped<BackendApiAuthenticationHttpClientHandler>();
-builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+builder.Services.AddScoped<ICouponService, CouponService>();
+builder.Services.AddScoped<IMessageService, MessageService>();
 builder.Services.AddHttpClient("Product", u => u.BaseAddress =
 new Uri(builder.Configuration["ServiceUrls:ProductAPI"])).AddHttpMessageHandler<BackendApiAuthenticationHttpClientHandler>();
 builder.Services.AddHttpClient("Coupon", u => u.BaseAddress =
@@ -66,18 +63,15 @@ builder.Services.AddAuthorization();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+app.UseSwagger();
+app.UseSwaggerUI(c =>
 {
-    app.UseSwagger();
-    app.UseSwaggerUI(c =>
+    if (!app.Environment.IsDevelopment())
     {
-        if (!app.Environment.IsDevelopment())
-        {
-            c.SwaggerEndpoint("/swagger/v1/swagger.json", "Cart API");
-            c.RoutePrefix = string.Empty;
-        }
-    });
-}
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "Cart API");
+        c.RoutePrefix = string.Empty;
+    }
+});
 
 app.UseHttpsRedirection();
 app.UseAuthentication();
