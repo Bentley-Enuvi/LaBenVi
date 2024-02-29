@@ -20,20 +20,18 @@ namespace LaBenVi_CartAPI.Controllers
         private readonly LaBenViDbContext _context;
         private IProductService _productService;
         private ICouponService _couponService;
-        private readonly IMessageService _messageService;
         private readonly IConfiguration _configuration;
     
 
         public CartController(LaBenViDbContext context, IMapper mapper, 
             IProductService productService, ICouponService couponService,
-            IConfiguration configuration, IMessageService messageService)
+            IConfiguration configuration)
         {
             _context = context;
             this._response = new ResponseDto();
             _mapper = mapper;
             _productService = productService;
             _couponService = couponService;
-            _messageService = messageService;
             _configuration = configuration;
         }
         
@@ -133,59 +131,57 @@ namespace LaBenVi_CartAPI.Controllers
         }
 
 
-        //Send in-message to the cart
-        [HttpPost("EmailCartRequest")]
-        public async Task<IActionResult> EmailCart([FromBody] CartDto cartDto)
-        {
-            try
-            {
-                List<string> userEmails = GetCartUserEmails(cartDto); // Replace with the actual recipient's email address
-                foreach (string userEmail in userEmails)
-                {
-                    string subject = "Your Cart Details";
-                    string body = $"Hello, here are the details of your cart: {cartDto.CartDetails}"; // Customize the email body as needed
-
-                    await _messageService.SendEmailAsync(userEmail, subject, body);
-                }
-
-                return Ok(new { isSuccess = true, message = "Emails sent successfully." });
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, new { isSuccess = false, message = ex.Message });
-            }
-        }
-
-        private List<string> GetCartUserEmails(CartDto cartDto)
-        {
-            List<string> userEmails = new List<string>();
-
-            foreach (var cartItem in cartDto.CartDetails)
-            {
-                // Assuming each cart item has a user ID
-                string userId = cartItem.UserId;
-
-                // Use Entity Framework to retrieve the user's email address by user ID
-                var user = _context.AppUsers.FirstOrDefault(u => u.Id == userId);
-                if (user != null)
-                {
-                    userEmails.Add(user.Email);
-                }
-            }
-
-            return userEmails;
-        }
-
-        //private string GetUserEmailById(string userId)
+        //[HttpPost]
+        //public async Task<IActionResult> EmailCart(CartDto cartDto)
         //{
-        //    // Implement logic to retrieve the user's email address from the database based on the user ID
-        //    // You can use your existing user management system or database context to fetch the email address
-
-        //    // Sample implementation (replace with your actual logic):
-        //    return "user@example.com"; // Placeholder email address, replace with actual logic to retrieve user email
+        //    CartDto cart = cartDto;
+        //    ResponseDto response = await 
         //}
 
+        //Send in-message to the cart
+        //[HttpPost("EmailCartRequest")]
+        //public async Task<IActionResult> EmailCart([FromBody] CartDto cartDto)
+        //{
+        //    try
+        //    {
+        //        List<string> userEmails = GetCartUserEmails(cartDto); // Replace with the actual recipient's email address
+        //        foreach (string userEmail in userEmails)
+        //        {
+        //            string subject = "Your Cart Details";
+        //            string body = $"Hello, here are the details of your cart: {cartDto.CartDetails}"; // Customize the email body as needed
 
+        //            await _messageService.SendEmailAsync(userEmail, subject, body);
+        //        }
+
+        //        return Ok(new { isSuccess = true, message = "Emails sent successfully." });
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return StatusCode(500, new { isSuccess = false, message = ex.Message });
+        //    }
+        //}
+
+        //private List<string> GetCartUserEmails(CartDto cartDto)
+        //{
+        //    List<string> userEmails = new List<string>();
+
+        //    foreach (var cartItem in cartDto.CartDetails)
+        //    {
+        //        // Assuming each cart item has a user ID
+        //        string userId = cartItem.UserId;
+
+        //        // Use Entity Framework to retrieve the user's email address by user ID
+        //        var user = _context.AppUsers.FirstOrDefault(u => u.Id == userId);
+        //        if (user != null)
+        //        {
+        //            userEmails.Add(user.Email);
+        //        }
+        //    }
+
+        //    return userEmails;
+        //}
+
+        
 
 
         [HttpGet("GetCart/{userId}")]

@@ -1,10 +1,9 @@
 ﻿
-using LaBenVi_AuthService.Models;
-using LaBenVi_AuthService.Service.IService;
+using LaBenVi_OrderAPI.Models;
 using System.Net.Http.Headers;
 using System.Text;
 
-namespace LaBenVi_AuthService.Service
+namespace LaBenVi_OrderAPI.Services
 {
     public class MailgunMessengerService : IMessengerService
     {

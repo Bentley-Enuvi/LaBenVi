@@ -38,9 +38,7 @@ namespace LaBenVi_AuthService.Service
                 Name = regRequestDto.Name,
                 PhoneNumber = regRequestDto.PhoneNumber,
                 Address = regRequestDto.Address,
-                Password = regRequestDto.Password
-                
-                
+                Password = regRequestDto.Password  
             };
 
             var result = await _userManager.CreateAsync(user, regRequestDto.Password);
@@ -141,7 +139,7 @@ namespace LaBenVi_AuthService.Service
                 var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                 var confirmationLink = $"{confirmEmailAddress}?token={token}&email={user.Email}";
 
-                var senderEmail = "labenvi@gmail.com";
+                //var senderEmail = "labenvi@gmail.com";
                 var message = new EmailLogger(
                     "Email Confirmation",
                     new List<string> { user.Email },

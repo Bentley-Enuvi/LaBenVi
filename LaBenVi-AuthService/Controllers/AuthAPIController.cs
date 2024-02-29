@@ -83,7 +83,7 @@ namespace LaBenVi_AuthService.Controllers
             if (email == null || token == null)
             {
                 return BadRequest(new
-                { errorTitle = "Invalid Email or Token", errorMessage = "Email or token cannot be null" });
+                    { errorTitle = "Invalid Email or Token", errorMessage = "Email or token cannot be null" });
             }
 
             // ensure that user exists
@@ -103,6 +103,7 @@ namespace LaBenVi_AuthService.Controllers
             // on failure
             return BadRequest(new { errorTitle = "Confirmation Failed", errorMessage = "Could not confirm email" });
         }
+
 
 
         [HttpPost("ForgotPassword")]
@@ -177,6 +178,7 @@ namespace LaBenVi_AuthService.Controllers
         }
 
 
+
         [HttpGet("ResetPassword")]
         public IActionResult ResetPassword(string token, string Email)
         {
@@ -196,6 +198,8 @@ namespace LaBenVi_AuthService.Controllers
 
             return Ok(viewModel);
         }
+
+
 
 
         [HttpPost("ResetPassword")]
